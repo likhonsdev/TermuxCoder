@@ -1,0 +1,14 @@
+{
+  "api_key": "",
+  "model": "gemini-1.5-pro",
+  "max_tokens": 8192,
+  "temperature": 0.7,
+  "stream_output": true,
+  "logs_enabled": true,
+  "logs_dir": "logs",
+  "default_extract_dir": ".",
+  "code_highlight": true,
+  "auto_run": false,
+  "save_history": true,
+  "history_size": 10
+}
