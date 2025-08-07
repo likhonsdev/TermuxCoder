@@ -1,12 +1,49 @@
 version: '3.8'
 
 services:
-  app:
-    build: .
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=development
+      - "5173:5173"
+    depends_on:
+      - agent-backend
+
+  agent-backend:
+    build:
+      context: ./agent-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
     volumes:
-      - .:/app
-    command: npm run dev
+      - ./agent-backend:/app
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - PLAYWRIGHT_SERVICE_URL=http://playwright-service:3000
+    depends_on:
+      - playwright-service
+
+  playwright-service:
+    build:
+      context: ./playwright-service
+      dockerfile: Dockerfile
+    ports:
+      - "7900:7900" # VNC
+    expose:
+      - "3000" # API
+
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=etc/UTC
+      - PASSWORD=password # The password the agent will use
+      - SUDO_PASSWORD=password
+    volumes:
+      - ./workspace:/config/workspace
+    ports:
+      - "8443:8443"
+    restart: unless-stopped

@@ -1,0 +1,13 @@
+{
+  "name": "playwright-service",
+  "version": "1.0.0",
+  "description": "A service to control a Playwright browser with VNC enabled.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "playwright": "^1.44.0"
+  }
+}
